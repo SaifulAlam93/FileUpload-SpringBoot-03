@@ -1,0 +1,128 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="mb-0">
+            <i class="fas fa-box me-2"></i>
+            {{ isEditMode ? 'Edit Product' : 'Add New Product' }}
+          </h4>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="saveProduct()" *ngIf="!loading; else loadingTemplate">
+            <div class="row">
+              <!-- Left Column - Product Details -->
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="name" class="form-label">Product Name *</label>
+                  <input type="text" class="form-control" id="name" [(ngModel)]="product.name" name="name" required
+                    maxlength="100" placeholder="Enter product name">
+                </div>
+
+                <div class="mb-3">
+                  <label for="description" class="form-label">Description</label>
+                  <textarea class="form-control" id="description" [(ngModel)]="product.description" name="description"
+                    rows="4" maxlength="500" placeholder="Enter product description"></textarea>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="price" class="form-label">Price ($) *</label>
+                      <input type="number" class="form-control" id="price" [(ngModel)]="product.price" name="price"
+                        step="0.01" min="0" required placeholder="0.00">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="quantity" class="form-label">Quantity *</label>
+                      <input type="number" class="form-control" id="quantity" [(ngModel)]="product.quantity"
+                        name="quantity" min="0" required placeholder="0">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="category" class="form-label">Category *</label>
+                  <select class="form-select" id="category" [(ngModel)]="product.category" name="category" required>
+                    <option [ngValue]="null" disabled>Select a category</option>
+                    <option *ngFor="let category of categories" [ngValue]="category">
+                      {{ category.name }}
+                    </option>
+                  </select>
+                  <div class="form-text">
+                    Don't see the category you need?
+                    <a routerLink="/categories/new" class="text-decoration-none">Create a new category</a>.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column - Image Upload -->
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="images" class="form-label">Product Images</label>
+                  <input type="file" class="form-control" id="images" (change)="onFilesSelected($event)" accept="image/*" multiple>
+                  <div class="form-text">
+                    Supported formats: JPEG, PNG, GIF. Max size: 5MB each.
+                  </div>
+                </div>
+
+                <!-- Images Preview -->
+                <div class="image-upload-area border rounded p-3 text-center">
+                  <div *ngIf="imagePreviews.length > 0; else noImageTemplate" class="d-flex flex-wrap gap-2 justify-content-center">
+                    <div *ngFor="let preview of imagePreviews; let i = index" class="position-relative">
+                      <img [src]="preview" alt="Product preview" class="img-thumbnail" style="width: 120px; height: 120px; object-fit: cover;">
+                      <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0" (click)="removeFile(i)">
+                        &times;
+                      </button>
+                    </div>
+                  </div>
+
+                  <ng-template #noImageTemplate>
+                    <div class="text-muted">
+                      <i class="fas fa-image fa-3x mb-2"></i>
+                      <p class="mb-0">No image selected</p>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
+                <i class="fas fa-arrow-left me-1"></i>Back to Products
+              </button>
+              <h4 class="mb-0">
+                <i class="fas fa-box me-2"></i>
+                {{ isEditMode ? 'Edit Product' : 'Add New Product' }}
+              </h4>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+              <button type="submit" class="btn btn-success"
+                [disabled]="!product.name || !product.price || !product.quantity || !product.category">
+                <i class="fas fa-save me-1"></i>
+                {{ isEditMode ? 'Update' : 'Create' }} Product
+              </button>
+              <button type="button" class="btn btn-secondary" (click)="cancel()">
+                <i class="fas fa-times me-1"></i>
+                Cancel
+              </button>
+            </div>
+          </form>
+
+          <ng-template #loadingTemplate>
+            <div class="text-center py-4">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2 mb-0">
+                {{ isEditMode ? 'Loading product data...' : 'Creating product...' }}
+              </p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

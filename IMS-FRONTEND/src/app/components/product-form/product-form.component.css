@@ -1,0 +1,21 @@
+.preview-image {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+}
+
+.image-upload-area {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+}
+
+.image-preview-container {
+  text-align: center;
+}
+
+.form-label {
+  font-weight: 600;
+}
