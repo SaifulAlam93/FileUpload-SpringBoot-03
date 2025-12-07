@@ -1,4 +1,102 @@
+
 <div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+
+      <div class="card">
+        <div class="card-header">
+          <h4>{{ isEditMode ? 'Edit Product' : 'Add Product' }}</h4>
+        </div>
+
+        <div class="card-body">
+
+          <form (ngSubmit)="saveProduct()" *ngIf="!loading; else loadingTpl">
+
+            <div class="row">
+              <div class="col-md-6">
+
+                <!-- NAME -->
+                <div class="mb-3">
+                  <label>Name *</label>
+                  <input class="form-control" [(ngModel)]="product.name" name="name" required />
+                </div>
+
+                <!-- DESC -->
+                <div class="mb-3">
+                  <label>Description</label>
+                  <textarea class="form-control" [(ngModel)]="product.description" name="description"></textarea>
+                </div>
+
+                <!-- PRICE & QTY -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <label>Price *</label>
+                    <input type="number" class="form-control" [(ngModel)]="product.price" name="price" required />
+                  </div>
+                  <div class="col-md-6">
+                    <label>Quantity *</label>
+                    <input type="number" class="form-control" [(ngModel)]="product.quantity" name="quantity" required />
+                  </div>
+                </div>
+
+                <!-- CATEGORY -->
+                <div class="mt-3">
+                  <label>Category *</label>
+                  <select class="form-select" [(ngModel)]="product.category" name="category">
+                    <option *ngFor="let cat of categories" [ngValue]="cat">{{ cat.name }}</option>
+                  </select>
+                </div>
+
+              </div>
+
+              <!-- IMAGE UPLOAD -->
+              <div class="col-md-6">
+                <label>Images</label>
+                <input type="file" class="form-control" multiple (change)="onFilesSelected($event)" />
+
+                <!-- PREVIEW -->
+                <div class="d-flex flex-wrap mt-3">
+                  <div class="m-2 position-relative" *ngFor="let img of imagePreviews; let i = index">
+                    <img [src]="img" class="img-thumbnail" width="120" height="120" style="object-fit:cover;">
+                    <button type="button"
+                            class="btn btn-danger btn-sm position-absolute top-0 end-0"
+                            (click)="removeFile(i)">
+                      X
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <button class="btn btn-success mt-4" type="submit">
+              {{ isEditMode ? 'Update Product' : 'Create Product' }}
+            </button>
+
+            <button class="btn btn-secondary mt-4 ms-2" type="button" (click)="cancel()">
+              Cancel
+            </button>
+
+          </form>
+
+          <ng-template #loadingTpl>
+            <div class="text-center py-3">
+              <div class="spinner-border"></div>
+              <p>Loading...</p>
+            </div>
+          </ng-template>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- <div class="container mt-4">
   <div class="row justify-content-center">
     <div class="col-lg-10">
       <div class="card">
@@ -11,7 +109,6 @@
         <div class="card-body">
           <form (ngSubmit)="saveProduct()" *ngIf="!loading; else loadingTemplate">
             <div class="row">
-              <!-- Left Column - Product Details -->
               <div class="col-md-6">
                 <div class="mb-3">
                   <label for="name" class="form-label">Product Name *</label>
@@ -57,7 +154,6 @@
                 </div>
               </div>
 
-              <!-- Right Column - Image Upload -->
               <div class="col-md-6">
                 <div class="mb-3">
                   <label for="images" class="form-label">Product Images</label>
@@ -67,7 +163,6 @@
                   </div>
                 </div>
 
-                <!-- Images Preview -->
                 <div class="image-upload-area border rounded p-3 text-center">
                   <div *ngIf="imagePreviews.length > 0; else noImageTemplate" class="d-flex flex-wrap gap-2 justify-content-center">
                     <div *ngFor="let preview of imagePreviews; let i = index" class="position-relative">
@@ -125,4 +220,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
