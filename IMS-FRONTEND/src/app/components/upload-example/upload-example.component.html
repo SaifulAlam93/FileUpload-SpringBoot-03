@@ -1,0 +1,29 @@
+<main class="upload-example">
+  <header>
+    <p class="eyebrow">Multipart REST example</p>
+    <h1>Entity with multiple images</h1>
+    <p>Send the complete record as JSON and all selected images in one request.</p>
+  </header>
+
+  <form class="record-form" (ngSubmit)="submit()">
+    <label>Title<input name="title" [(ngModel)]="title" required maxlength="120"></label>
+    <label>Reference code<input name="referenceCode" [(ngModel)]="referenceCode" required maxlength="60"></label>
+    <label class="wide">Description<textarea name="description" [(ngModel)]="description" required maxlength="1000" rows="3"></textarea></label>
+    <label>Quantity<input name="quantity" [(ngModel)]="quantity" type="number" min="0" required></label>
+    <label>Unit price<input name="unitPrice" [(ngModel)]="unitPrice" type="number" min="0" step="0.01" required></label>
+    <label class="wide">Images<input #imagesInput type="file" accept="image/*" multiple (change)="onImagesSelected($event)" required><small>{{ images.length }} image(s) selected</small></label>
+    <div class="wide submit-row"><button type="submit" [disabled]="busy || !images.length">{{ busy ? 'Saving record and images…' : 'Save record with images' }}</button></div>
+  </form>
+
+  <p class="notice" *ngIf="notice" role="status">{{ notice }}</p>
+  <p class="error" *ngIf="error" role="alert">{{ error }}</p>
+
+  <section class="records">
+    <div class="section-heading"><h2>Saved records</h2><button type="button" class="refresh" (click)="refresh()">Refresh</button></div>
+    <p class="empty" *ngIf="records.length === 0">No example records yet.</p>
+    <article class="record-card" *ngFor="let record of records">
+      <div class="record-copy"><h3>{{ record.title }} <small>#{{ record.id }}</small></h3><p>{{ record.description }}</p><dl><div><dt>Reference</dt><dd>{{ record.referenceCode }}</dd></div><div><dt>Quantity</dt><dd>{{ record.quantity }}</dd></div><div><dt>Unit price</dt><dd>{{ record.unitPrice | number:'1.2-2' }}</dd></div></dl></div>
+      <div class="images"><a *ngFor="let image of record.images" [href]="fileUrl(image.viewUrl)" target="_blank" rel="noopener" [title]="image.originalFilename"><img [src]="fileUrl(image.viewUrl)" [alt]="image.originalFilename"><span>{{ image.originalFilename }}</span></a></div>
+    </article>
+  </section>
+</main>

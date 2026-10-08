@@ -1,0 +1,92 @@
+.product-image {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+}
+
+.product-image-gallery {
+  display: flex;
+  max-width: 190px;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 2px;
+}
+
+.product-image-button {
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.product-image-button:focus-visible {
+  outline: 2px solid #0d6efd;
+  outline-offset: 2px;
+}
+
+.no-image {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.table th {
+  border-top: none;
+}
+
+.image-viewer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px 24px;
+  background: rgba(0, 0, 0, .88);
+  cursor: zoom-out;
+}
+
+.image-viewer-content {
+  display: flex;
+  max-width: 100%;
+  max-height: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image-viewer-full-image {
+  display: block;
+  max-width: min(92vw, 1400px);
+  max-height: 82vh;
+  object-fit: contain;
+  cursor: default;
+}
+
+.image-viewer-content p {
+  margin: 12px 0 0;
+  color: #fff;
+  text-align: center;
+}
+
+.image-viewer-close {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .15);
+  color: white;
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+}

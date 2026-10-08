@@ -1,0 +1,59 @@
+<section class="file-library">
+  <div class="page-heading">
+    <div>
+      <p class="eyebrow">REST API example</p>
+      <h1>File library</h1>
+      <p class="subheading">Upload files, browse stored metadata, and download them when needed.</p>
+    </div>
+    <span class="api-label">Spring Boot · Angular</span>
+  </div>
+
+  <div class="upload-panel">
+    <div>
+      <h2>Upload a file</h2>
+      <p>Choose one or more files and attach them to an entity record.</p>
+    </div>
+    <form (ngSubmit)="upload()">
+      <input class="entity-input" name="entityType" [(ngModel)]="entityType" placeholder="Entity type (e.g. Product)" required>
+      <input class="entity-input id-input" name="entityId" [(ngModel)]="entityId" type="number" min="1" placeholder="Entity ID" required>
+      <label class="file-picker">
+        <span>{{ selectedFiles.length ? selectedFiles.length + ' file(s) selected' : 'Choose files' }}</span>
+        <input #fileInput type="file" multiple (change)="onFileSelected($event)" [disabled]="busy">
+      </label>
+      <button class="upload-button" type="submit" [disabled]="!selectedFiles.length || !entityType.trim() || !entityId || busy">
+        {{ busy ? 'Uploading…' : 'Upload file' }}
+      </button>
+    </form>
+  </div>
+
+  <p class="notice" *ngIf="notice" role="status">{{ notice }}</p>
+  <p class="error" *ngIf="error" role="alert">{{ error }}</p>
+
+  <div class="list-heading">
+    <div>
+      <h2>Stored files</h2>
+      <p>{{ files.length }} {{ files.length === 1 ? 'file' : 'files' }}<span *ngIf="entityType && entityId"> for {{ entityType }} #{{ entityId }}</span></p>
+    </div>
+    <div class="list-actions">
+      <button class="refresh-button" type="button" (click)="entityType = ''; entityId = null; refresh()">All files</button>
+      <button class="refresh-button" type="button" (click)="refresh()">Filter</button>
+    </div>
+  </div>
+
+  <div class="empty-state" *ngIf="files.length === 0">No files uploaded yet.</div>
+  <div class="file-list" *ngIf="files.length > 0">
+    <article class="file-row" *ngFor="let file of files">
+      <div class="file-icon">FILE</div>
+      <div class="file-details">
+        <h3>{{ file.originalFilename }}</h3>
+        <p>{{ formatSize(file.size) }} <span>·</span> {{ file.contentType }} <span>·</span> {{ file.uploadedAt | date:'medium' }} <span *ngIf="file.entityType">· {{ file.entityType }} #{{ file.entityId }}</span></p>
+      </div>
+      <div class="file-actions">
+        <a class="view-button" [href]="viewUrl(file)" target="_blank" rel="noopener">View</a>
+        <button class="download-button" type="button" (click)="download(file)">Download</button>
+        <button class="edit-button" type="button" (click)="edit(file)">Edit</button>
+        <button class="delete-button" type="button" (click)="remove(file)" [attr.aria-label]="'Delete ' + file.originalFilename">Delete</button>
+      </div>
+    </article>
+  </div>
+</section>

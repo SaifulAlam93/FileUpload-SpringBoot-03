@@ -1,0 +1,316 @@
+<div class="container mt-4">
+
+  <div class="row justify-content-center">
+
+    <div class="col-lg-10">
+
+      <div class="card shadow-sm">
+
+
+        <!-- ================= HEADER ================= -->
+
+        <div class="card-header">
+
+          <h4 class="mb-0">
+
+            {{ isEditMode ? 'Edit Product' : 'Add Product' }}
+
+          </h4>
+
+        </div>
+
+
+        <!-- ================= LOADING ================= -->
+
+        <div
+          *ngIf="loading"
+          class="card-body text-center loading-box">
+
+          <div class="spinner-border text-primary"></div>
+
+          <p class="mt-2">
+            Loading...
+          </p>
+
+        </div>
+
+
+        <!-- ================= FORM ================= -->
+
+        <form  [formGroup]="productForm" (ngSubmit)="saveProduct()">
+
+
+          <div class="card-body">
+
+            <div class="row">
+
+
+              <!-- ================= LEFT ================= -->
+
+              <div class="col-md-6">
+
+
+                <!-- PRODUCT NAME -->
+
+                <div class="mb-3">
+
+                  <label class="form-label">
+                    Product Name *
+                  </label>
+
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="name"
+                    placeholder="Enter product name">
+
+
+                  <div
+                    *ngIf="isInvalid('name')"
+                    class="text-danger">
+
+                    Product name is required.
+
+                  </div>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="mb-3">
+
+                  <label class="form-label">
+                    Description
+                  </label>
+
+                  <textarea
+                    class="form-control"
+                    rows="4"
+                    formControlName="description"
+                    placeholder="Enter description">
+                  </textarea>
+
+                </div>
+
+
+                <!-- PRICE + QUANTITY -->
+
+                <div class="row">
+
+
+                  <!-- PRICE -->
+
+                  <div class="col-md-6">
+
+                    <div class="mb-3">
+
+                      <label class="form-label">
+                        Price *
+                      </label>
+
+                      <input
+                        type="number"
+                        class="form-control"
+                        formControlName="price"
+                        min="0">
+
+
+                      <div
+                        *ngIf="isInvalid('price')"
+                        class="text-danger">
+
+                        Valid price is required.
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+
+                  <!-- QUANTITY -->
+
+                  <div class="col-md-6">
+
+                    <div class="mb-3">
+
+                      <label class="form-label">
+                        Quantity *
+                      </label>
+
+                      <input
+                        type="number"
+                        class="form-control"
+                        formControlName="quantity"
+                        min="0">
+
+
+                      <div
+                        *ngIf="isInvalid('quantity')"
+                        class="text-danger">
+
+                        Valid quantity is required.
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                <!-- CATEGORY -->
+
+                <div class="mb-3">
+
+                  <label class="form-label">
+                    Category *
+                  </label>
+
+                  <select
+                    class="form-select"
+                    formControlName="category">
+
+                    <option [ngValue]="null">
+                      Select Category
+                    </option>
+
+                    <option
+                      *ngFor="let cat of categories"
+                      [ngValue]="cat">
+
+                      {{ cat.name }}
+
+                    </option>
+
+                  </select>
+
+
+                  <div
+                    *ngIf="isInvalid('category')"
+                    class="text-danger">
+
+                    Please select a category.
+
+                  </div>
+
+                </div>
+
+
+              </div>
+
+
+              <!-- ================= RIGHT ================= -->
+
+              <div class="col-md-6">
+
+
+                <label class="form-label">
+                  Product Images
+                </label>
+
+
+                <!-- FILE INPUT -->
+
+                <input
+                  type="file"
+                  class="form-control"
+                  multiple
+                  accept="image/*"
+                  (change)="onFilesSelected($event)">
+
+                <small class="text-muted">
+                  Maximum 10MB per image.
+                </small>
+                <!-- ================= IMAGE PREVIEW ================= -->
+                <div
+                  *ngIf="imagePreviews.length > 0"
+                  class="row mt-3">
+                  <div
+                    *ngFor="
+                      let image of imagePreviews;
+                      let i = index
+                    "
+                    class="col-6 col-md-4 mb-3">
+                    <div class="image-box">
+                      <img
+                        [src]="image"
+                        class="preview-image"
+                        alt="Product image">
+                      <button
+                        type="button"
+                        class="btn btn-danger btn-sm remove-btn"
+                        (click)="removeFile(i)">
+
+                        ×
+
+                      </button>
+
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                <!-- NO IMAGE -->
+
+                <div
+                  *ngIf="imagePreviews.length === 0"
+                  class="no-image mt-3">
+
+                  <span class="text-muted">
+
+                    No image selected
+
+                  </span>
+
+                </div>
+
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- ================= FOOTER ================= -->
+
+          <div class="card-footer">
+
+
+            <button
+              type="submit"
+              class="btn btn-success">
+
+              {{ isEditMode ? 'Update Product' : 'Create Product' }}
+
+            </button>
+
+
+            <button
+              type="button"
+              class="btn btn-secondary ms-2"
+              (click)="cancel()">
+
+              Cancel
+
+            </button>
+
+
+          </div>
+
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
