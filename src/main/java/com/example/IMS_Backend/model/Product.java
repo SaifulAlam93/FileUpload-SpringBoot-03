@@ -35,11 +35,9 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     @JsonIgnoreProperties("products")
-//    @JsonBackReference
     private Category category;
 
-    @Column
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> imageUrls = new ArrayList<>();
     // Constructors
     public Product() {}
